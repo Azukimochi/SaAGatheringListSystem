@@ -18,6 +18,38 @@ namespace io.github.Azukimochi
         {
             weeks = GetComponentsInChildren<Button>();
         }
+        public void PressedSunday()
+        {
+            OnClicked(Week.Sunday);
+        }
+        public void PressedMonday()
+        {
+            OnClicked(Week.Monday);
+        }
+        public void PressedTuesday()
+        {
+            OnClicked(Week.Tuesday);
+        }
+        public void PressedWednesday()
+        {
+            OnClicked(Week.Wednesday);
+        }
+        public void PressedThursday()
+        {
+            OnClicked(Week.Thursday);
+        }
+        public void PressedFriday()
+        {
+            OnClicked(Week.Friday);
+        }
+        public void PressedSaturday()
+        {
+            OnClicked(Week.Saturday);
+        }
+        public void PressedOtherday()
+        {
+            OnClicked(Week.Other);
+        }
 
         public void OnClicked(Week week)
         {
