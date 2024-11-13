@@ -79,6 +79,7 @@ namespace io.github.Azukimochi
                 newObj.SetActive(true);
                 newObj.name = data.Name;
                 newObj.GetComponentInChildren<Text>().text = data.Name;
+                newObj.GetComponentInChildren<Image>().color = data.Tags.Contains("tech", StringComparer.OrdinalIgnoreCase) ? new Color(0.85f, 0.95f, 1.0f) : new Color(0.95f, 0.95f, 0.8f);
                 var button = newObj.GetComponent<Button>();
                 var so = new SerializedObject(button);
                 so.FindProperty("m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument").stringValue = $"OnClicked_{data.ID}";
