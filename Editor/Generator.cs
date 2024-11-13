@@ -143,7 +143,7 @@ namespace io.github.Azukimochi
         {{
             string time = GetJST().ToString(""HH:mm:ss"");
 
-            time = $""Œ»İ {{time}} JST"";
+            time = $""ç¾åœ¨æ™‚åˆ» {{time}} JST"";
             _timeText.text = time;
         }}
 
