@@ -78,7 +78,8 @@ namespace io.github.Azukimochi
 
                 newObj.SetActive(true);
                 newObj.name = data.Name;
-                newObj.GetComponentInChildren<Text>().text = data.Name;
+                newObj.GetComponent<RectTransform>().sizeDelta = new Vector2(715.6f, 0f);
+                newObj.GetComponentInChildren<Text>().text = $"{DateTime.ParseExact(data.StartTime,"HH:mm:ss", null):HH:mm}{data.Frequency}\n{data.Name}\n‰∏ªÂÇ¨„ÉªÂâØ‰∏ªÂÇ¨Ôºö{data.Organizers}";
                 newObj.GetComponentInChildren<Image>().color = data.Tags.Contains("tech", StringComparer.OrdinalIgnoreCase) ? new Color(0.85f, 0.95f, 1.0f) : new Color(0.95f, 0.95f, 0.8f);
                 var button = newObj.GetComponent<Button>();
                 var so = new SerializedObject(button);
@@ -131,7 +132,6 @@ namespace io.github.Azukimochi
         [SerializeField] private Text _Description;
         [SerializeField] private Toggle _toggle_Tech;
         [SerializeField] private Toggle _toggle_Academic;
-        [SerializeField] private Text _timeText;
 
         [SerializeField] private GameObject _creditPanel;
 
@@ -139,17 +139,9 @@ namespace io.github.Azukimochi
         [SerializeField] public Color _selectedColor = Color.gray;
         [SerializeField] public Color _todayColor = new Color(0.3f, 0.3f, 0.3f);
 
-        private void Update()
+        public void _VketStart()
         {{
-            string time = GetJST().ToString(""HH:mm:ss"");
-
-            time = $""åªç›éûçè {{time}} JST"";
-            _timeText.text = time;
-        }}
-
-        private void Start()
-        {{
-            _currentWeek = (Week)((int)GetJST().DayOfWeek + 1);
+            _currentWeek = (Week)(DateTime.Now.DayOfWeek + 1);
             Reflesh();
         }}
     
@@ -175,11 +167,13 @@ namespace io.github.Azukimochi
                 button.SetActive(false);
             foreach(var button in WeekButtons)
                 button.GetComponentInChildren<Button>().image.color = _defaultColor;
-            var todayWeek = (int)GetJST().DayOfWeek;
-            WeekButtons[(int)GetJST().DayOfWeek].GetComponentInChildren<Button>().image.color = _todayColor;
+            WeekButtons[(int)DateTime.Now.DayOfWeek].GetComponentInChildren<Button>().image.color = _todayColor;
             {string.Join(" ", weeks.Select((x, i) => $"if (_currentWeek == Week.{x.Item2}) {{ buttons = Buttons_{x.Item1}; WeekButtons[{i}].GetComponentInChildren<Button>().image.color = _selectedColor; }}"))}
             foreach(var button in buttons)
-                button.SetActive(true); 
+            {{
+                button.GetComponent<RectTransform>().sizeDelta = new Vector2(715.6f, 110.01f);
+                button.SetActive(true);
+            }}
             
             if (!_toggle_Tech.isOn)
                 foreach (var x in Buttons_Tech)
@@ -192,16 +186,6 @@ namespace io.github.Azukimochi
                 {{
                     x.SetActive(false);
                 }}
-        }}
-
-        public static DateTime GetJST()
-        {{
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            var jstZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(""Tokyo Standard Time"");
-#else
-            var jstZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(""Asia/Tokyo"");
-#endif
-            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, jstZoneInfo);
         }}
 
         [SerializeField] public GameObject[] WeekButtons;
